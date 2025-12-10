@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Строительный магазин</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 15px;
+      line-height: 1.4;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      cursor: pointer; 
+    }
+
+    .block {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 25px;
+    }
+
+    .block.highlight {
+      background-color: #f9f9ff;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea, button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    input[type="datetime-local"],
+    input[type="time"],
+    textarea,
+    select {
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid #999;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      background-color: #ebdc0b;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .info-text {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    #orderSummary {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      background-color: #f3f3f3;
+      border: 1px solid #ddd;
+      min-height: 50px;
+    }
+
+    .controls-row {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    .small-note {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="pageTitle">Строительный магазин</h1>
+
+  <div class="block highlight" id="gameAndOrderBlock">
+    <h2>Игра «Угадай число»</h2>
+    <p class="info-text">
+      Нажмите кнопку ниже, чтобы начать игру. Компьютер загадает число от 1 до 100,
+      а вы будете вводить варианты через окно <code>prompt</code>. После каждого ответа
+      появится подсказка: загаданное число больше или меньше.
+    </p>
+    <button type="button" id="startGameBtn">Начать игру</button>
+    <p class="small-note" id="gameInfo">Игра ещё не начата.</p>
+
+    <hr style="margin: 20px 0;" />
+
+    <h2>Информация о заказе</h2>
+    <p class="info-text">
+      Заполните форму заказа строительных материалов. После отправки краткая
+      сводка заказа появится ниже, как на примере сайта преподавателя.
+    </p>
+
+    <form id="orderForm">
+      <div class="form-row">
+        <label for="firstName">Имя:</label>
+        <input type="text" id="firstName"/>
+      </div>
+
+      <div class="form-row">
+        <label for="lastName">Фамилия:</label>
+        <input type="text" id="lastName"/>
+      </div>
+
+      <div class="form-row">
+        <label for="phone">Телефон:</label>
+        <input type="tel" id="phone"/>
+      </div>
+
+      <div class="form-row">
+        <label for="address">Адрес доставки:</label>
+        <input type="text" id="address"/>
+      </div>
+
+      <div class="form-row">
+        <label for="dateTime">Дата и время доставки:</label>
+        <input type="datetime-local" id="dateTime" />
+      </div>
+
+      <div class="form-row">
+        <label for="material">Строительный материал:</label>
+        <select id="material">
+          <option value="">Выберите материал</option>
+          <option>Цемент</option>
+          <option>Кирпичи</option>
+          <option>Песок</option>
+          <option>Краска</option>
+          <option>Доски</option>
+          <option>Плитка</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="amount">Количество (кг/шт):</label>
+        <input type="number" id="amount" min="1" />
+      </div>
+
+      <div class="form-row">
+        <label for="payment">Способ оплаты:</label>
+        <select id="payment">
+          <option value="">Выберите способ оплаты</option>
+          <option>Наличные</option>
+          <option>Карта</option>
+          <option>Онлайн</option>
+        </select>
+      </div>
+
+      <button type="submit">Отправить заказ</button>
+    </form>
+
+    <div id="orderSummary">
+      Заполните форму для просмотра деталей заказа.
+    </div>
+  </div>
+
+  <div class="block" id="callbackBlock">
+    <h2>Заказ обратного звонка</h2>
+    <p class="info-text">
+      Оставьте свои данные, и менеджер строительного магазина свяжется с вами
+      в удобное время.
+    </p>
+
+    <form id="callbackForm">
+      <div class="form-row">
+        <label for="cbName">Имя:</label>
+        <input type="text" id="cbName" />
+      </div>
+
+      <div class="form-row">
+        <label for="cbPhone">Телефон:</label>
+        <input type="tel" id="cbPhone" />
+      </div>
+
+      <div class="form-row">
+        <label for="cbTime">Удобное время звонка:</label>
+        <input type="time" id="cbTime" />
+      </div>
+
+      <button type="submit">Заказать звонок</button>
+    </form>
+
+    <div class="controls-row">
+      <button type="button" id="changeButtonsColor">Изменить цвет кнопок</button>
+      <button type="button" id="changeBackground">Изменить фон страницы</button>
+    </div>
+
+    <p class="small-note">
+      Эти кнопки меняют внешний вид страницы с помощью JavaScript, как в примере сайта:
+      можно переключать цвет всех кнопок и фона документа.
+    </p>
+  </div>
+
+  <script>
+
+    const startGameBtn = document.getElementById('startGameBtn');
+    const gameInfo = document.getElementById('gameInfo');
+
+    function startGuessGame() {
+      let secret = Math.floor(Math.random() * 100) + 1; 
+      let attempts = 0;
+      gameInfo.textContent = 'Число загадано. Попробуйте его угадать через окна prompt.';
+
+      while (true) {
+        const input = prompt('Угадайте число от 1 до 100 (для выхода нажмите Отмена):');
+        if (input === null) {
+          alert('Игра прервана.');
+          gameInfo.textContent = 'Игра прервана. Вы можете начать заново.';
+          break;
+        }
+
+        const guess = Number(input);
+
+        if (!Number.isInteger(guess) || guess < 1 || guess > 100) {
+          alert('Введите целое число от 1 до 100.');
+          continue;
+        }
+
+        attempts++;
+
+        if (guess === secret) {
+          alert('Поздравляем! Вы угадали число ' + secret + ' за ' + attempts + ' попыток.');
+          gameInfo.textContent = 'Последняя игра: число ' + secret + ', попыток: ' + attempts + '.';
+
+          const playAgain = confirm('Сыграть ещё раз?');
+          if (playAgain) {
+           
+            startGuessGame();
+          } else {
+            break;
+          }
+          break;
+        } else if (guess < secret) {
+          alert('Загаданное число больше.');
+        } else {
+          alert('Загаданное число меньше.');
+        }
+      }
+    }
+
+    startGameBtn.addEventListener('click', startGuessGame);
+
+    const orderForm = document.getElementById('orderForm');
+    const orderSummary = document.getElementById('orderSummary');
+
+    orderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const dateTime = document.getElementById('dateTime').value;
+      const material = document.getElementById('material').value;
+      const amount = document.getElementById('amount').value;
+      const payment = document.getElementById('payment').value;
+
+      if (!firstName || !lastName || !phone || !address || !dateTime || !material || !amount || !payment) {
+        alert('Пожалуйста, заполните все поля формы заказа.');
+        return;
+      }
+
+      orderSummary.innerHTML =
+        '<strong>Покупатель:</strong> ' + firstName + ' ' + lastName + '<br>' +
+        '<strong>Телефон:</strong> ' + phone + '<br>' +
+        '<strong>Адрес доставки:</strong> ' + address + '<br>' +
+        '<strong>Дата и время:</strong> ' + dateTime + '<br>' +
+        '<strong>Материал:</strong> ' + material + '<br>' +
+        '<strong>Количество:</strong> ' + amount + '<br>' +
+        '<strong>Способ оплаты:</strong> ' + payment;
+
+      alert('Заказ отправлен! Сводка отображена в блоке "Информация о заказе".');
+
+      orderForm.reset();
+    });
+
+
+    const callbackForm = document.getElementById('callbackForm');
+
+    callbackForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('cbName').value.trim();
+      const phone = document.getElementById('cbPhone').value.trim();
+      const time = document.getElementById('cbTime').value;
+
+      if (!name || !phone || !time) {
+        alert('Пожалуйста, заполните все поля для заказа звонка.');
+        return;
+      }
+
+      alert('Спасибо, ' + name + '! Мы перезвоним по номеру ' + phone +
+        ' в указанное вами время: ' + time + '.');
+
+      callbackForm.reset();
+    });
+
+    const changeButtonsColorBtn = document.getElementById('changeButtonsColor');
+    const changeBackgroundBtn = document.getElementById('changeBackground');
+    const allButtons = document.getElementsByTagName('button');
+
+    changeButtonsColorBtn.addEventListener('click', function () {
+      for (let i = 0; i < allButtons.length; i++) {
+        const btn = allButtons[i];
+        if (btn.dataset.altColor === '1') {
+          btn.style.backgroundColor = '#007bff';
+          btn.dataset.altColor = '0';
+        } else {
+          btn.style.backgroundColor = '#28a745';
+          btn.dataset.altColor = '1';
+        }
+      }
+    });
+
+    changeBackgroundBtn.addEventListener('click', function () {
+      if (document.body.dataset.altBg === '1') {
+        document.body.style.backgroundColor = 'white';
+        document.body.dataset.altBg = '0';
+      } else {
+        document.body.style.backgroundColor = '#f0f8ff';
+        document.body.dataset.altBg = '1';
+      }
+    });
+
+
+    const pageTitle = document.getElementById('pageTitle');
+    pageTitle.addEventListener('click', function () {
+      alert('Это демонстрационный сайт: игра и формы реализованы на JavaScript.');
+    });
+  </script>
+</body>
+</html>
